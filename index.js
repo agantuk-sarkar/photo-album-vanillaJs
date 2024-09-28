@@ -1,6 +1,8 @@
 // photos url
 const url = "https://jsonplaceholder.typicode.com/photos";
 
+// let temp = false;
+
 // getting the htmls elements into js
 const main_container = document.querySelector(".main-container");
 const subContainer_albums = document.querySelector(".main-container>div");
@@ -56,8 +58,8 @@ const showAlbums = (albumObj)=>{
         main_div.classList.add("border-2","border-teal-500","h-[20vh]","rounded-lg","cursor-pointer","p-2","text-center","bg-teal-300");
         // applying click event for main div
         main_div.addEventListener("click",()=>{
+            showModal(albumObj[key],key);
 
-            showModal(albumObj[key]);
         })
 
         // to get albumIDs from the count of 1 to 100 inside main div
@@ -72,38 +74,50 @@ const showAlbums = (albumObj)=>{
 }
 
 // function to display modal when any album box is clicked
-const showModal = (albumArray)=>{
+const showModal = (albumArray,albumIds)=>{
 
-    // main_container.style.backgroundColor = "rgb(72,72,72)";
-    // main_container.style.filter = "blur(2px)";
-    subContainer_albums.style.backgroundColor = "rgb(0,0,0,0.5)";
-    // subContainer_albums.style.backdrop-filter = "blur(2px)";
+    const main_container_modal = document.createElement("div");
+    main_container_modal.classList.add("border-4","border-orange-600","h-[100vh]","fixed","top-0","left-0","w-[100%]","flex","justify-center","bg-gray-800/50","items-center");
 
 
     const modal_div = document.createElement("div");
-    modal_div.classList.add("border-2","border-blue-600","shadow-md","min-h-[90vh]","w-[60%]","bg-white","m-auto","absolute","top-[10rem]","z-99999","left-[18rem]");
+    modal_div.classList.add("border-2","border-blue-600","shadow-md","h-[80vh]","w-[44%]","bg-white","top-[5rem]","flex-col","rounded-lg");
 
     const modal_content = document.createElement("div");
     modal_content.classList.add("border-2","border-green-500","h-full");
 
     // close box
     const close_button = document.createElement("div");
-    close_button.classList.add("border","border-blue-500","h-[5vh]","flex","justify-end","text-red-500","font-bold","italic","cursor-pointer","text-xl");
-    close_button.textContent = "Close";
-    close_button.addEventListener("click",()=>{
-        modal_div.style.display = "none";
-    })
+    close_button.classList.add("border","border-blue-500","h-[15%]","flex","justify-between","text-xl");
+
+    const album_photos_text = document.createElement("p");
+    album_photos_text.textContent = `Album Photos - ${albumIds}`;
+    album_photos_text.classList.add("text-black-500","font-bold","italic");
+
+    const close_text = document.createElement("p");
+    close_text.textContent = "Close";
+    close_text.classList.add("text-red-500","font-bold","italic","cursor-pointer");
+
+
+    close_text.addEventListener("click",()=>{
+
+        main_container_modal.style.display = "none";
+        
+    });
+
+    close_button.append(album_photos_text,close_text);
+
 
     // photo content
     const photoContent_div = document.createElement("div");
-    photoContent_div.classList.add("border-2","border-teal-600","mt-[0.5rem]","h-[85vh]","grid","auto-rows-auto","grid-cols-3","gap-2","overflow-scroll");
+    photoContent_div.classList.add("border-2","border-teal-600","h-[85%]","grid","auto-rows-auto","grid-cols-3","gap-2","overflow-scroll");
 
     // using higher order function in album array
     albumArray?.forEach((albums)=>{
         const {title,url} = getObj(albums);
 
         const album_mainDiv = document.createElement("div");
-        album_mainDiv.classList.add("border","border-red-500","h-[40vh]");
+        album_mainDiv.classList.add("border","border-red-500","h-[40vh]","flex","flex-col");
 
         const photo_image = document.createElement("img");
         photo_image.src = url;
@@ -124,10 +138,11 @@ const showModal = (albumArray)=>{
 
     modal_div.append(modal_content);
 
-    subContainer_albums.append(modal_div);
+    main_container_modal.append(modal_div);
+
+    subContainer_albums.append(main_container_modal);
 
 }
-
 
 // function which will return an object to show title and url
 const getObj = (obj)=>{
