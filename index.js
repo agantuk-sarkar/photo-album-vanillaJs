@@ -1,8 +1,6 @@
 // photos url
 const url = "https://jsonplaceholder.typicode.com/photos";
 
-// let temp = false;
-
 // getting the htmls elements into js
 const main_container = document.querySelector(".main-container");
 const subContainer_albums = document.querySelector(".main-container>div");
@@ -24,7 +22,7 @@ const getData = async (albumUrl)=>{
 }
 getData(url);
  
-// function to filter albums with albumId and put them in an array corresponding to each keys of an object. Basically create an object
+// function to filter albums with albumId and put them in an array corresponding to each keys of an object. Basically create an new object
 
 const getAlbums = (data)=>{
 
@@ -45,7 +43,6 @@ const getAlbums = (data)=>{
         }
     });
 
-    // console.log("albumObj:",albumObj);
     showAlbums(albumObj);
 }
 
@@ -55,7 +52,7 @@ const showAlbums = (albumObj)=>{
     for(let key in albumObj){
 
         const main_div = document.createElement("div");
-        main_div.classList.add("border-2","border-teal-500","h-[20vh]","rounded-lg","cursor-pointer","p-2","text-center","bg-teal-300");
+        main_div.classList.add("border-transparent","h-[20vh]","rounded-lg","cursor-pointer","p-2","text-center","bg-teal-300");
         // applying click event for main div
         main_div.addEventListener("click",()=>{
             showModal(albumObj[key],key);
@@ -77,28 +74,28 @@ const showAlbums = (albumObj)=>{
 const showModal = (albumArray,albumIds)=>{
 
     const main_container_modal = document.createElement("div");
-    main_container_modal.classList.add("border-4","border-orange-600","h-[100vh]","fixed","top-0","left-0","w-[100%]","flex","justify-center","bg-gray-800/50","items-center");
+    main_container_modal.classList.add("border-transparent","h-[100vh]","fixed","top-0","left-0","w-[100%]","flex","justify-center","bg-gray-800/50","items-center");
 
 
     const modal_div = document.createElement("div");
-    modal_div.classList.add("border-2","border-blue-600","shadow-md","h-[80vh]","w-[44%]","bg-white","top-[5rem]","flex-col","rounded-lg");
+    modal_div.classList.add("border-transparent","shadow-md","h-[80vh]","w-[44%]","bg-white","top-[5rem]","flex-col","rounded-lg");
 
     const modal_content = document.createElement("div");
-    modal_content.classList.add("border-2","border-green-500","h-full");
+    modal_content.classList.add("border-transparent","h-full","rounded-lg","p-2");
 
     // close box
     const close_button = document.createElement("div");
-    close_button.classList.add("border","border-blue-500","h-[15%]","flex","justify-between","text-xl");
+    close_button.classList.add("border-transparent","h-[15%]","flex","justify-between","text-2xl");
 
     const album_photos_text = document.createElement("p");
     album_photos_text.textContent = `Album Photos - ${albumIds}`;
-    album_photos_text.classList.add("text-black-500","font-bold","italic");
+    album_photos_text.classList.add("text-black-500","font-bold","italic","mt-[0.5rem]");
 
     const close_text = document.createElement("p");
     close_text.textContent = "Close";
     close_text.classList.add("text-red-500","font-bold","italic","cursor-pointer");
 
-
+    // once clicked on close button, the modal container should be removed
     close_text.addEventListener("click",()=>{
 
         main_container_modal.style.display = "none";
@@ -110,14 +107,16 @@ const showModal = (albumArray,albumIds)=>{
 
     // photo content
     const photoContent_div = document.createElement("div");
-    photoContent_div.classList.add("border-2","border-teal-600","h-[85%]","grid","auto-rows-auto","grid-cols-3","gap-2","overflow-scroll");
+    photoContent_div.classList.add("border-transparent","h-[85%]","grid","auto-rows-auto","grid-cols-3","gap-2","overflow-scroll");
 
     // using higher order function in album array
     albumArray?.forEach((albums)=>{
+
+        // using destructuring in objects
         const {title,url} = getObj(albums);
 
         const album_mainDiv = document.createElement("div");
-        album_mainDiv.classList.add("border","border-red-500","h-[40vh]","flex","flex-col");
+        album_mainDiv.classList.add("border-transparent","h-[40vh]","flex","flex-col");
 
         const photo_image = document.createElement("img");
         photo_image.src = url;
